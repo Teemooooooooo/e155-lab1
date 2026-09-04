@@ -10,6 +10,8 @@ module top(
 		begin
 			counter <= counter + 1;
 		end
+	assign led[2] = counter[24];
+	
 	always_comb 
 		begin
 			case (s[1:0])
@@ -24,27 +26,37 @@ module top(
 				2'b10:	led[1] = 0;
 				2'b11:	led[1] = 1;
 			endcase
-			// code for the segment display
-			case (s)
-				4'h0:	seg = 7'b1111110;
-				4'h1:	seg = 7'b0110000;
-				4'h2:	seg = 7'b1101101;
-				4'h3:	seg = 7'b1111001;
-				4'h4:	seg = 7'b0110011;
-				4'h5:	seg = 7'b1011011;
-				4'h6:	seg = 7'b1011111;
-				4'h7:	seg = 7'b1110000;
-				4'h8:	seg = 7'b1111111;
-				4'h9:	seg = 7'b1111011;
-				4'hA:	seg = 7'b1110111;
-				4'hB:	seg = 7'b0011111;
-				4'hC:	seg = 7'b1001110;
-				4'hD:	seg = 7'b0111101;
-				4'hE:	seg = 7'b1001111;
-				4'hF:	seg = 7'b1000111;
-			endcase
 		end
 endmodule
+
+
+module seven_seg(
+	input   logic [3:0] s,
+	output  logic [6:0] seg
+	);
+	always_comb
+	// code for the segment display
+		case (s)
+			4'h0:	seg = 7'b1111110;
+			4'h1:	seg = 7'b0110000;
+			4'h2:	seg = 7'b1101101;
+			4'h3:	seg = 7'b1111001;
+			4'h4:	seg = 7'b0110011;
+			4'h5:	seg = 7'b1011011;
+			4'h6:	seg = 7'b1011111;
+			4'h7:	seg = 7'b1110000;
+			4'h8:	seg = 7'b1111111;
+			4'h9:	seg = 7'b1111011;
+			4'hA:	seg = 7'b1110111;
+			4'hB:	seg = 7'b0011111;
+			4'hC:	seg = 7'b1001110;
+			4'hD:	seg = 7'b0111101;
+			4'hE:	seg = 7'b1001111;
+			4'hF:	seg = 7'b1000111;
+		endcase
+	
+endmodule
+
 
 
 module topref(
