@@ -9,12 +9,14 @@ module lab1_ey(
 	output  logic [2:0] led,
 	output  logic [6:0] seg
 );
-	
+	logic int_osc;
+
 	assign led[0] = s[1]^s[2];
 	assign led[1] = s[3]&s[2];
 		
-	flash_led flash_led(.reset, .flash(led[2]));
-	seven_seg seven_seg(.s, .seg);
+	HSOSC hf_osc (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(int_osc));	
+	flash_led flash_led(.clk(int_osc), .reset, .flash(led[2]));
+	seven_seg seven_seg(..s, .seg);
 endmodule
 
 

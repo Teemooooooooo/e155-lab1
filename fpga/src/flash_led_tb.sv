@@ -1,71 +1,107 @@
 // Ellen Yu ellyu@g.hmc.edu Sep. 7 2026
 // Testbench for the LED flashing at 2.4 Hz
+// tests reset, enable, and max count behavior
 
-//TODO: WIP
+`timescale 1 ns/1 ns
 
-`timescale 1ns/1ns
-`default_nettype none
-`define N_TV 16
+module flash_led_tb();
+  logic           clk;    // system clock
+  logic           reset, enable;  // active high reset, enable
+  logic           flash;      // 1 bit LED output
 
-module seven_seg_tb();
- // Set up test signals
- logic clk, reset;
- logic [6:0]  seg, seg_expected ;
- logic [3:0]  s;
- logic [31:0] vectornum, errors;
- logic [10:0] testvectors[10000:0]; // Vectors of format s[3:0]_seg[6:0]
+    flash_led dut (
+        .clk(clk),
+        .reset(reset),
+        .enable(enable),
+        .flash(flash)
+    );
 
- // Instantiate the device under test
- seven_seg dut(.seg, .s);
+  // generate clock
+  always begin
+      clk = 0; #5;
+      clk = 1; #5;
+  end
 
- // Generate clock signal with a period of 10 timesteps.
- always
-   begin
-     clk = 1; #5;
-     clk = 0; #5;
-   end
+  // apply stimuli and check outputs
+  initial begin
+    reset = 1;
+    enable = 1;
+    #22 reset = 0;
 
- // At the start of the simulation:
- //  - Load the testvectors
- //  - Pulse the reset line (if applicable)
- initial
-   begin
-     $readmemb("seven_seg_testvectors.tv", testvectors, 0, `N_TV - 1);
-     vectornum = 0; errors = 0;
-     reset = 1; #27; reset = 0;
-   end
-  // Apply test vector on the rising edge of clk
- always @(posedge clk)
-   begin
-	   // input and expected output in testvector
-       #1; {s, seg_expected} = testvectors[vectornum];
-   end
-  initial
- begin
-   // Create dumpfile for signals
-   $dumpfile("seven_seg_tb.vcd");
-   $dumpvars(0, seven_seg_tb);
- end
-  // Check results on the falling edge of clk
- always @(negedge clk)
-   begin
-     if (~reset) // skip during reset
-       begin
-         if (seg != seg_expected)
-           begin
-             $display("Error: inputs: s=%b", s);
-             $display(" outputs: seg=%b (%b expected)", seg, seg_expected);
-             errors = errors + 1;
-           end
+    // for each test case we setup the inputs, wait for the outputs to update,
+    // and then check that the outputs match what we expect using `assert`
+    // in this case, the leds use combinational logic, so we don't *need* to wait
+    // a full clock cycle (#10)
+   
+    // testing reset behavior
+        #50;
+        reset = 1'b1;
+        #20;
+        assert (dut.counter == 24'b0)
+            $display("PASSED! Counter resetted as expected at time: %0t.", $time);
+        else 
+            $error("FAILED! Counter behaves incorrectly at time: %0t.", $time); 
+        
+        assert (flash == 'b0)
+            $display("PASSED! LED is off as expected at time: %0t.", $time);
+        else 
+            $error("FAILED! LED behaves incorrectly at time: %0t.", $time); 
+        // ... add the rest of the states you want to check here
 
+    // testing enable behavior (off)
+        enable = 1'b0;
+        reset = 1'b1;
+        #10;
+        reset = 1'b0;
+        #50;
+        assert (dut.counter == 24'b0)
+            $display("PASSED! Counter did not increment at time: %0t.", $time);
+        else 
+            $error("FAILED! Counter behaves incorrectly at time: %0t.", $time); 
+        
+        assert (flash == 'b0)
+            $display("PASSED! LED is off as expected: %0t.", $time);
+        else 
+            $error("FAILED! LED behaves incorrectly at time: %0t.", $time); 
+        
+    // testing enable behavior (on)
+        enable = 1'b1;
+        reset = 1'b1;
+        #10;
+        reset = 1'b0;
+        #50;
+        assert (dut.counter == 24'b101)
+            $display("PASSED! Counter did not increment at time: %0t.", $time);
+        else 
+            $error("FAILED! Counter behaves incorrectly at time: %0t.", $time); 
+        
+        assert (flash == 'b0)
+            $display("PASSED! LED is off as expected: %0t.", $time);
+        else 
+            $error("FAILED! LED behaves incorrectly at time: %0t.", $time); 
 
-       vectornum = vectornum + 1;
-
-       if (testvectors[vectornum] === 11'bx)
-         begin
-           $display("%d tests completed with %d errors.", vectornum, errors);
-           $finish;
-         end
-     end
-   end
+    // testing max counter behavior (LED on)
+        reset = 1'b1;
+        #10;
+        reset = 1'b0;
+        #20000000;
+        #10;
+        assert (dut.counter == 24'b0)
+            $display("PASSED! Counter got reset as expected: %0t.", $time);
+        else
+            $display("FAILED! Counter has incorrect behavior at time: %0t.", $time);
+        
+        assert (flash == 1'b1)
+            $display("PASSED! LED turned on as expected: %0t.", $time);
+        else
+            $display("FAILED! LED has incorrect behavior at time: %0t.", $time);
+    
+    // then wait another max LED should turn off
+        #20000000;
+        assert (flash == 1'b1)
+            $display("PASSED! LED turned off as expected: %0t.", $time);
+        else
+            $display("FAILED! LED has incorrect behavior at time: %0t.", $time);
+    #100 $stop;
+  end
 endmodule

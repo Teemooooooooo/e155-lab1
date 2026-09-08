@@ -2,15 +2,14 @@
 // This module controls the LED to flash at 2.4 Hz
 
 module flash_led #(parameter COUNTER_SIZE = 25, MAX_THRESHOLD = 24'd10000000)(
-	input   logic 		reset, enable,
+	input   logic 		clk, reset, enable,
 	output  logic 		flash
 	);
-	logic int_osc;
 	logic max;
 	logic [COUNTER_SIZE-1:0] counter = 0;
-	HSOSC hf_osc (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(int_osc));
+
 	// Simple clock divider
-	always_ff @(posedge int_osc)
+	always_ff @(posedge clk)
 		if (enable)
 			if (reset)
 				begin
