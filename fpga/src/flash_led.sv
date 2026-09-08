@@ -11,7 +11,7 @@ module flash_led #(parameter COUNTER_SIZE = 25, MAX_THRESHOLD = 24'd10000000)(
 	// Simple clock divider
 	always_ff @(posedge clk)
 		if (enable)
-			if (reset)
+			if (~reset)
 				begin
 					flash <= 0;
 					max <= 0;
@@ -29,4 +29,8 @@ module flash_led #(parameter COUNTER_SIZE = 25, MAX_THRESHOLD = 24'd10000000)(
 						counter <= counter + 1;
 						max <= (counter == MAX_THRESHOLD);
 					end
+		else
+				begin
+				counter <= counter;
+				end
 endmodule

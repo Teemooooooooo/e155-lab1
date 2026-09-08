@@ -24,9 +24,9 @@ module flash_led_tb();
 
   // apply stimuli and check outputs
   initial begin
-    reset = 1;
+    reset = 0;
     enable = 1;
-    #22 reset = 0;
+    #22 reset = 1;
 
     // for each test case we setup the inputs, wait for the outputs to update,
     // and then check that the outputs match what we expect using `assert`
@@ -35,7 +35,7 @@ module flash_led_tb();
    
     // testing reset behavior
         #50;
-        reset = 1'b1;
+        reset = 1'b0;
         #20;
         assert (dut.counter == 24'b0)
             $display("PASSED! Counter resetted as expected at time: %0t.", $time);
@@ -50,9 +50,9 @@ module flash_led_tb();
 
     // testing enable behavior (off)
         enable = 1'b0;
-        reset = 1'b1;
-        #10;
         reset = 1'b0;
+        #10;
+        reset = 1'b1;
         #50;
         assert (dut.counter == 24'b0)
             $display("PASSED! Counter did not increment at time: %0t.", $time);
@@ -66,9 +66,9 @@ module flash_led_tb();
         
     // testing enable behavior (on)
         enable = 1'b1;
-        reset = 1'b1;
-        #10;
         reset = 1'b0;
+        #10;
+        reset = 1'b1;
         #50;
         assert (dut.counter == 24'b101)
             $display("PASSED! Counter did not increment at time: %0t.", $time);
@@ -81,9 +81,9 @@ module flash_led_tb();
             $error("FAILED! LED behaves incorrectly at time: %0t.", $time); 
 
     // testing max counter behavior (LED on)
-        reset = 1'b1;
-        #10;
         reset = 1'b0;
+        #10;
+        reset = 1'b1;
         #100000000; // counter reach MAX_threshold
         #10;  // max get set to 1
 		assert (dut.max == 1'b1)

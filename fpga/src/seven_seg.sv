@@ -7,7 +7,7 @@ module seven_seg(
 	);
 	always_comb
 	// code for the segment display
-		case (s)
+		case (~s)
 			4'h0:	seg = ~7'b1111110;
 			4'h1:	seg = ~7'b0110000;
 			4'h2:	seg = ~7'b1101101;
@@ -24,6 +24,7 @@ module seven_seg(
 			4'hD:	seg = ~7'b0111101;
 			4'hE:	seg = ~7'b1001111;
 			4'hF:	seg = ~7'b1000111;
+			default: seg = 7'b1111111;
 		endcase
 	
 endmodule
