@@ -16,7 +16,7 @@ module lab1_ey(
 		
 	HSOSC hf_osc (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(int_osc));	
 	flash_led flash_led(.clk(int_osc), .reset, .flash(led[2]));
-	seven_seg seven_seg(..s, .seg);
+	seven_seg seven_seg(.s, .seg);
 endmodule
 
 
