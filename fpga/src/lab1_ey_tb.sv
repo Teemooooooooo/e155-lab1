@@ -8,7 +8,7 @@ module lab1_ey_tb();
   logic 		reset, enable;
   logic [2:0]   led; 
   logic [6:0]   seg;
-    lab1_ey_tb dut (
+    lab1_ey dut (
         .s(s),
         .enable(enable),
         .reset(reset),
@@ -16,15 +16,11 @@ module lab1_ey_tb();
         .seg(seg)
     );
 
-  // generate clock
-  always begin
-      clk = 0; #5;
-      clk = 1; #5;
-  end
-
   // apply stimuli and check outputs
   initial begin
-    reset = 1;
+    enable = 1'b1;
+	s = 4'b0;
+	reset = 1;
     #22 reset = 0;
 
     // for each test case we setup the inputs, wait for the outputs to update,

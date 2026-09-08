@@ -15,12 +15,14 @@ module flash_led #(parameter COUNTER_SIZE = 25, MAX_THRESHOLD = 24'd10000000)(
 				begin
 					flash <= 0;
 					max <= 0;
+					counter <= 0;
 				end
 			else
 				if (max) 
 					begin
 						counter <= 0;
 						flash 	<= ~flash;
+						max     <= 0;
 					end
 				else
 					begin

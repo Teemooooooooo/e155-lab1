@@ -77,7 +77,7 @@ module seven_seg_tb();
             $error("FAILED! The 7 segment display behaves incorrectly at time: %0t.", $time); 
     
     // test 8
-        s = 4'0111;                // setup inputs
+        s = 4'b0111;                // setup inputs
         #10;                        // wait required time
         assert (seg == 7'b1110000)       // check outputs
             $display("PASSED! The 7 segment display behaves as desired at time: %0t.", $time);
