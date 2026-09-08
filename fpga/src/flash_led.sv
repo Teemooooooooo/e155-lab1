@@ -28,9 +28,12 @@ module flash_led #(parameter COUNTER_SIZE = 25, MAX_THRESHOLD = 24'd10000000)(
 					begin
 						counter <= counter + 1;
 						max <= (counter == MAX_THRESHOLD);
+						flash <= flash;
 					end
 		else
 				begin
 				counter <= counter;
+				max <= max;
+				flash <= flash;
 				end
 endmodule

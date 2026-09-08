@@ -20,8 +20,8 @@ module lab1_ey_tb();
   initial begin
     enable = 1'b1;
 	s = 4'b0;
-	reset = 1;
-    #22 reset = 0;
+	reset = 0;
+    #22 reset = 1;
 
     // for each test case we setup the inputs, wait for the outputs to update,
     // and then check that the outputs match what we expect using `assert`
@@ -91,7 +91,10 @@ module lab1_ey_tb();
             $display("PASSED! The led 1 controller behaves as desired at time: %0t.", $time);
         else 
             $error("FAILED! The led 1 controller behaves incorrectly at time: %0t.", $time); 
-      
+    // waiting to see flashing light turn on
+	#1000000000; // counter reach MAX_threshold
+	#40
+
     #100 $stop;
   end
 endmodule
