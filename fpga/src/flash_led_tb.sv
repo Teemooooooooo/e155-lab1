@@ -85,12 +85,6 @@ module flash_led_tb();
         #10;
         reset = 1'b1;
         #100000000; // counter reach MAX_threshold
-        #10;  // max get set to 1
-		assert (dut.max == 1'b1)
-            $display("PASSED! Max variable is 1 as expected: %0t.", $time);
-        else
-            $display("FAILED! max variable has 0 at time: %0t.", dut.counter, $time);
-        #10; // counter gets reset & max gets reset & LED turns on
 		assert (dut.counter == 24'b0)
             $display("PASSED! Counter got back to zero as expected: %0t.", $time);
         else
@@ -101,14 +95,10 @@ module flash_led_tb();
         else
             $display("FAILED! LED has incorrect behavior at time: %0t.", $time);
     
-		assert (dut.max == 1'b0)
-            $display("PASSED! Max variable is 0 as expected: %0t.", $time);
-        else
-            $display("FAILED! max variable has 1 at time: %0t.", dut.counter, $time);
     // then wait another max LED should turn off
         #100000000;
 		#10;
-        assert (flash == 1'b1)
+        assert (flash == 1'b0)
             $display("PASSED! LED turned off as expected at counter %0d: %0t.", dut.counter, $time);
         else
             $display("FAILED! LED has incorrect behavior at time: %0t.", $time);

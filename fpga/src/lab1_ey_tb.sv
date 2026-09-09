@@ -29,7 +29,7 @@ module lab1_ey_tb();
     // a full clock cycle (#10)
 
     // test 1
-        s[1:0] = 2'b00;                // setup inputs
+        s[1:0] = ~2'b00;                // setup inputs
         #10;                        // wait required time
         assert (led[0] == 1'b0)       // check outputs
             $display("PASSED! The led 0 controller behaves as desired at time: %0t.", $time);
@@ -37,7 +37,7 @@ module lab1_ey_tb();
             $error("FAILED! The led 0 controller behaves incorrectly at time: %0t.", $time); 
             
     // test 2
-        s[1:0] = 2'b01;                // setup inputs
+        s[1:0] = ~2'b01;                // setup inputs
         #10;                        // wait required time
         assert (led[0] == 1'b1)       // check outputs
             $display("PASSED! The led 0 controller behaves as desired at time: %0t.", $time);
@@ -45,7 +45,7 @@ module lab1_ey_tb();
             $error("FAILED! The led 0 controller behaves incorrectly at time: %0t.", $time); 
       
     // test 3
-        s[1:0] = 2'b10;                // setup inputs
+        s[1:0] = ~2'b10;                // setup inputs
         #10;                        // wait required time
         assert (led[0] == 1'b1)       // check outputs
             $display("PASSED! The led 0 controller behaves as desired at time: %0t.", $time);
@@ -53,7 +53,7 @@ module lab1_ey_tb();
             $error("FAILED! The led 0 controller behaves incorrectly at time: %0t.", $time); 
       
     // test 4
-        s[1:0] = 2'b11;                // setup inputs
+        s[1:0] = ~2'b11;                // setup inputs
         #10;                        // wait required time
         assert (led[0] == 1'b0)       // check outputs
             $display("PASSED! The led 0 controller behaves as desired at time: %0t.", $time);
@@ -61,7 +61,7 @@ module lab1_ey_tb();
             $error("FAILED! The led 0 controller behaves incorrectly at time: %0t.", $time); 
       
     // test 1b
-        s[3:2] = 2'b00;                // setup inputs
+        s[3:2] = ~2'b00;                // setup inputs
         #10;                        // wait required time
         assert (led[1] == 1'b0)       // check outputs
             $display("PASSED! The led 1 controller behaves as desired at time: %0t.", $time);
@@ -69,7 +69,7 @@ module lab1_ey_tb();
             $error("FAILED! The led 1 controller behaves incorrectly at time: %0t.", $time); 
 
     // test 2b
-        s[3:2] = 2'b01;                // setup inputs
+        s[3:2] = ~2'b01;                // setup inputs
         #10;                        // wait required time
         assert (led[1] == 1'b0)       // check outputs
             $display("PASSED! The led 1 controller behaves as desired at time: %0t.", $time);
@@ -77,7 +77,7 @@ module lab1_ey_tb();
             $error("FAILED! The led 1 controller behaves incorrectly at time: %0t.", $time); 
       
     // test 3b
-        s[3:2] = 2'b10;                // setup inputs
+        s[3:2] = ~2'b10;                // setup inputs
         #10;                        // wait required time
         assert (led[1] == 1'b0)       // check outputs
             $display("PASSED! The led 1 controller behaves as desired at time: %0t.", $time);
@@ -85,7 +85,7 @@ module lab1_ey_tb();
             $error("FAILED! The led 1 controller behaves incorrectly at time: %0t.", $time); 
       
     // test 4b
-        s[3:2] = 2'b11;                // setup inputs
+        s[3:2] = ~2'b11;                // setup inputs
         #10;                        // wait required time
         assert (led[1] == 1'b1)       // check outputs
             $display("PASSED! The led 1 controller behaves as desired at time: %0t.", $time);
