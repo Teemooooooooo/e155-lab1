@@ -15,12 +15,7 @@ module flash_led #(parameter COUNTER_SIZE = 25, MAX_THRESHOLD = 24'd10000000)(
 				counter <= 0;
 			end
 		else
-			if (~enable)
-				begin
-					counter <= counter;
-					flash <= flash;
-				end
-			else
+			if (enable)
 				if (counter == (MAX_THRESHOLD - 1)) 
 					begin
 						counter <= 0;
